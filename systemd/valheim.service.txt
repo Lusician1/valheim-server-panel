@@ -1,0 +1,21 @@
+# /etc/systemd/system/valheim.service
+[Unit]
+Description=Valheim Server
+After=network-online.target
+
+[Service]
+User=steam
+ExecStart=/home/steam/valheim/start.sh
+Restart=always
+
+[Install]
+WantedBy=multi-user.target
+
+# /etc/systemd/system/valheim.service.d/override.conf
+[Unit]
+Wants=network-online.target
+
+[Service]
+KillSignal=SIGINT
+TimeoutStopSec=60
+Restart=on-failure
