@@ -14,7 +14,7 @@ A neat looking control panel for controlling updates, mods, backups, etc.
 | File | Purpose |
 |---|---|
 | `update_valheim.sh` | Automatically saves and exits the world before updating the game |
-| `start.sh.example` | Configurable script for creating a world if not created already, and running the world |
+| `start.sh.example` | Configurable script for creating a world if not created already, and starting the world |
 | `systemd/valheim.service.txt` | Snapshot of the systemd service and override that runs the server  |
 
 ## How to update the server
