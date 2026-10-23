@@ -1,6 +1,8 @@
 // Express
 const express = require('express');
 const app = express();
+
+app.use(express.static('public'));
 // Let's the panel run programs on server
 const { execFile } = require('child_process');
 
@@ -9,9 +11,7 @@ const { execFile } = require('child_process');
 const PORT = 3000;
 
 
-app.get('/', (req, res) => {
-    res.send('Hello Valheim!');
-});
+
 
 app.get('/about', (req, res) => {
     res.send('This is gonna be an awesome server panel for my valheim server ♥');
