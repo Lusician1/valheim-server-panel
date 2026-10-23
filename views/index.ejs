@@ -13,11 +13,7 @@
             Valheim server panel
         </h1>
         <p>Server status:
-            <%if (running) { %>
-                <span id="status" class="bage running">Running</span>
-            <% } else { %>
-                <span id="status" class="bage stopped">Stopped</span>
-            <% } %>
+            <span id="status" class="badge <%= status %>"><%= status %></span>
         </p>
     </main>
 </body>
