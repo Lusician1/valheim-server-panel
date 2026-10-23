@@ -4,8 +4,21 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Lusicians valheim panel</title>
+    <link rel="stylesheet" href="/style.css">
+    <script src="/app.js" defer></script>
 </head>
 <body>
-    
+    <main>
+        <h1>
+            Valheim server panel
+        </h1>
+        <p>Server status:
+            <%if (running) { %>
+                <span id="status" class="bage running">Running</span>
+            <% } else { %>
+                <span id="status" class="bage stopped">Stopped</span>
+            <% } %>
+        </p>
+    </main>
 </body>
 </html>
