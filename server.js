@@ -12,7 +12,10 @@ const { getStatus } = require('./lib/valheim');
 const PORT = 3000;
 
 
-
+app.get('/', async (req, res) => {
+    data = await getStatus()
+    res.render('index', data)
+})
 
 app.get('/about', (req, res) => {
     res.send('This is gonna be an awesome server panel for my valheim server ♥');
