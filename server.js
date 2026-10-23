@@ -20,12 +20,13 @@ app.get('/about', (req, res) => {
 app.get('/api/status', (req, res) => {
     execFile('systemctl', ['is-active', 'valheim'], (error, stdout) => {
         const status = stdout.trim();
+        const isActive = status === 'active'
 
         if (status === '') {
-            return res.json({status: 'unknown'});
+            return res.json({running: 'unknown', checkedAt: new Date().toISOString()});
         }
 
-        res.json({ status: status });
+        res.json({ running: isActive, checkedAt: "date" });
     });
 });
 
