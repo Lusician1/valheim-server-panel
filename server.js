@@ -1,6 +1,13 @@
+// Express
 const express = require('express');
 const app = express();
+// Let's the panel run programs on server
+const { execFile } = require('child_process');
+
+
+//Port where the panel runs
 const PORT = 3000;
+
 
 app.get('/', (req, res) => {
     res.send('Hello Valheim!');
@@ -11,7 +18,15 @@ app.get('/about', (req, res) => {
 });
 
 app.get('/api/status', (req, res) => {
-    res.json({ status: 'unknown' });
+    execFile('systemctl', ['is-active', 'valheim'], (error, stdout) => {
+        const status = stdout.trim();
+
+        if (status === '') {
+            return res.json({status: 'unknown'});
+        }
+
+        res.json({ status: status });
+    });
 });
 
 app.listen(PORT, () => {
