@@ -13,4 +13,4 @@ async function loadStatus(){
     }
 };
 
-setInterval(loadStatus, 10 * 1000);
+setInterval(loadStatus, 5 * 1000);
