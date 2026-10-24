@@ -9,21 +9,17 @@
   </head>
   <body>
     <main>
-      <header>
-        <h1>Valheim server panel</h1>
-      </header>
-      <p class="server-status">
-        Server status: <br />
-        <span id="status" class="badge <%= status %>"><%= status %></span>
-      </p>
-      <ul class="no-disc">
-        <li class="button-list">
-          <button id="stopServer" class="button">Stop</button>
-        </li>
-        <li class="button-list">
-          <button id="startServer" class="button">Start</button>
-        </li>
-      </ul>
+      <header><h1>Valheim panel</h1></header>
+      <section class="server-status">
+        <p>Server status:</p>
+        <p id="status" class="badge <%= status %>"><%= status %></p>
+      </section>
+      <section class="control-buttons">
+        <ul class="flex-list">
+          <li><button id="startSrv" class="btn start">Start server</button></li>
+          <li><button id="stopSrv" class="btn stop">Stop server</button></li>
+        </ul>
+      </section>
     </main>
   </body>
 </html>
