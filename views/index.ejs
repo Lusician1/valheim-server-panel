@@ -1,20 +1,31 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Lusicians valheim panel</title>
-    <link rel="stylesheet" href="/style.css">
+    <link rel="stylesheet" href="/style.css" />
     <script src="/app.js" defer></script>
-</head>
-<body>
+  </head>
+  <body>
     <main>
-        <h1>
-            Valheim server panel
-        </h1>
-        <p>Server status:
-            <span id="status" class="badge <%= status %>"><%= status %></span>
-        </p>
+      <header>
+        <h1>Valheim server panel</h1>
+      </header>
+      <p class="server-status mb0">
+        Server status: <br />
+        <ul class="status-badge"><li class="">
+          <span id="status" class="badge <%= status %>"><%= status %></span>
+        </li></ul>
+      </p>
+      <ul class="no-disc">
+        <li class="button-list">
+          <button id="stopServer" class="button">Stop</button>
+        </li>
+        <li class="button-list">
+          <button id="startServer" class="button">Start</button>
+        </li>
+      </ul>
     </main>
-</body>
+  </body>
 </html>

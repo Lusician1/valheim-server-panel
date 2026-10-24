@@ -1,0 +1,67 @@
+body {
+  margin: 0;
+  background-color: #01485a;
+  color: whitesmoke;
+}
+
+header {
+  display: flex;
+  justify-content: center;
+}
+
+.server-status {
+  margin-left: 10px;
+}
+
+.status-badge {
+  list-style-type: disc;
+}
+
+.button-list {
+  display: block;
+  margin: 0 auto;
+}
+.button {
+  display: block;
+  padding: 5px;
+  width: fit-content;
+}
+
+.mb0 {
+  margin-bottom: 0;
+}
+
+.button-list {
+  display: flex;
+  list-style-type: none;
+  gap: 10px;
+  padding: 0;
+  margin: 0;
+}
+
+/* Status badges */
+
+.badge {
+  display: inline-block;
+  padding: 5px;
+  border-radius: 25px;
+  font-weight: bold;
+  color: white;
+  background: #757575;
+}
+
+.badge.active {
+  background: #2e7d32;
+}
+.badge.inactive {
+  background: #c62828;
+}
+.badge.failed {
+  background: #c62828;
+}
+.badge.activating {
+  background: #f9a825;
+}
+.badge.unknown {
+  background: #757575;
+}
