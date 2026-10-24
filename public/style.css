@@ -4,35 +4,56 @@ body {
   color: whitesmoke;
 }
 
+main {
+  width: 90%;
+  margin: 0 auto;
+}
+
 header {
+  margin: 0 auto;
+}
+
+.server-status {
+  margin-left: 2em;
+}
+
+.flex-list {
+  padding: 0;
+  gap: 0.5rem;
+  margin: 16px auto;
+  list-style-type: none;
   display: flex;
   justify-content: center;
 }
 
-.server-status {
-  margin-left: 10px;
+/* Typography */
+
+h1,
+h2,
+h3 {
+  text-align: center;
 }
 
-.button-list {
-  display: block;
-  margin: 0 auto;
+/* Buttons */
+
+.btn {
+  border: none;
+  outline: none;
+  background-color: #757575;
+  border-radius: 10px;
+  padding: 0.7rem;
 }
-.button {
-  display: block;
-  padding: 5px;
-  width: fit-content;
+.start {
+  background-color: #2e7d32;
 }
 
-.mb0 {
-  margin-bottom: 0;
+.stop {
+  background-color: #c62828;
 }
 
-.button-list {
-  display: flex;
-  list-style-type: none;
-  gap: 10px;
-  padding: 0;
-  margin: 0;
+.btn:active {
+  transition: 100ms ease-in-out;
+  background-color: #d6c5c5;
 }
 
 /* Status badges */
