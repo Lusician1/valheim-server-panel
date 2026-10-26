@@ -18,7 +18,7 @@ async function loadStatus() {
 }
 
 async function serverAction(action) {
-  if (action === 'stop' && !confirm('Stop the server? Players will be disconnected.')) {
+  if(action === 'stop' && !confirm('Stop the server? Players will be disconnected.')) {
     return;
   }
 
@@ -28,8 +28,10 @@ async function serverAction(action) {
     const response = await fetch(`/api/server/${action}`, { method: 'POST' });
     const data = await response.json();
     if(!data.ok) {
-      alert('Failed: ' + data.error );
+      alert('Failed: ' + data.error);
     }
+  } catch (error) {
+    alert('Could not reach the panel.');
   } finally {
     buttons.forEach(btn => btn.disabled = false);
     loadStatus();
