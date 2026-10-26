@@ -34,7 +34,7 @@ app.locals.panelName = process.env.PANEL_NAME;
 
 // Import scripts
 const { checkPassword, requireLogin } = require('./lib/auth');
-const { getStatus } = require('./lib/valheim');
+const { getStatus, controlServer } = require('./lib/valheim');
 
 //Port where the panel runs
 const PORT = process.env.PORT || 3000;
