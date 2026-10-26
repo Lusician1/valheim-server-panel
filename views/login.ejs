@@ -1,0 +1,19 @@
+<main class="login-screen">
+  <div class="card login-card">
+    <div class="login-brand">
+      <div class="brand-mark">V</div>
+      <h1 class="login-title"><%= panelName %></h1>
+      <p class="muted">Sign in to manage your server</p>
+    </div>
+
+    <% if (error) { %>
+      <p class="error"><%= error %></p>
+    <% } %>
+
+    <form method="post" action="/login" class="login-form">
+      <label for="password" class="label">Password</label>
+      <input type="password" id="password" name="password" class="input" required autofocus />
+      <button class="btn btn-primary">Log in</button>
+    </form>
+  </div>
+</main>
