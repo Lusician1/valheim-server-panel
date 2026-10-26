@@ -1,4 +1,97 @@
 body {
+<<<<<<< HEAD
     background-color: whitesmoke;
     
 }
+=======
+  margin: 0;
+  background-color: #01485a;
+  color: whitesmoke;
+}
+
+main {
+  width: 90%;
+  margin: 0 auto;
+}
+
+header {
+  margin: 0 auto;
+}
+
+.server-status {
+  margin-left: 2em;
+}
+
+.flex-list {
+  padding: 0;
+  gap: 0.5rem;
+  margin: 16px auto;
+  list-style-type: none;
+  display: flex;
+  justify-content: center;
+}
+
+/* Typography */
+
+h1,
+h2,
+h3 {
+  text-align: center;
+}
+
+/* Buttons */
+
+.btn {
+  border: none;
+  outline: none;
+  background-color: #757575;
+  border-radius: 10px;
+  padding: 0.7rem;
+}
+.start {
+  background-color: #2e7d32;
+}
+
+.stop {
+  background-color: #c62828;
+}
+
+.btn:active {
+  transition: 100ms ease-in-out;
+  background-color: #d6c5c5;
+}
+
+/* Status badges */
+
+.badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4em;
+  font-weight: bold;
+}
+
+.badge::before {
+  content: "";
+  flex-shrink: 0;
+  width: 0.7em;
+  height: 0.7em;
+  border-radius: 50%;
+  background: #757575;
+}
+
+.badge.active::before {
+  background: #2e7d32;
+}
+.badge.inactive::before {
+  background: #c62828;
+}
+.badge.failed::before {
+  background: #c62828;
+}
+.badge.activating::before {
+  background: #f9a825;
+}
+.badge.unknown::before {
+  background: #757575;
+}
+>>>>>>> 383e7fd160ff232d91277b9445a3cb6c4297d057
