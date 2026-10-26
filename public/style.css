@@ -1,9 +1,4 @@
 body {
-<<<<<<< HEAD
-    background-color: whitesmoke;
-    
-}
-=======
   margin: 0;
   background-color: #01485a;
   color: whitesmoke;
@@ -43,7 +38,6 @@ h3 {
 
 .btn {
   border: none;
-  outline: none;
   background-color: #757575;
   border-radius: 10px;
   padding: 0.7rem;
@@ -94,4 +88,3 @@ h3 {
 .badge.unknown::before {
   background: #757575;
 }
->>>>>>> 383e7fd160ff232d91277b9445a3cb6c4297d057
