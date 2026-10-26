@@ -41,7 +41,9 @@ h3 {
   background-color: #757575;
   border-radius: 10px;
   padding: 0.7rem;
+  transition: 100ms ease-in-out;
 }
+
 .start {
   background-color: #2e7d32;
 }
@@ -50,6 +52,9 @@ h3 {
   background-color: #c62828;
 }
 
+.btn:focus {
+    outline: black 5px solid;
+}
 .btn:active {
   transition: 100ms ease-in-out;
   background-color: #d6c5c5;
