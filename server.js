@@ -78,6 +78,15 @@ app.get('/about', (req, res) => {
     res.send('This is gonna be an awesome server panel for my valheim server ♥');
 });
 
+app.post('/api/server/:action', requireLogin, async (req, res) => {
+    try {
+        await controlServer(req.params.action);
+        res.json({ ok: true, ...(await getStatus()) });
+    } catch (error) {
+        res.status(500).json({ ok: false, error: error.message});
+    }
+});
+
 app.get('/api/status', requireLogin, async (req, res) => {
     res.json(await getStatus());
 });
