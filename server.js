@@ -1,11 +1,11 @@
 require('dotenv').config();
 const required = ['SESSION_SECRET', 'PANEL_PASSWORD_HASH'];
-const missing = required.filter(name => !process.env[name])
+const missing = required.filter(name => !process.env[name]);
 
 if (missing.length > 0) {
     console.error(`Missing in .env: ${missing.join(', ')}. See .env.example`);
     process.exit(1);
-};
+}
 
 
 // Express
@@ -24,7 +24,7 @@ app.use(session({
     cookie: {
         httpOnly: true,
         sameSite: 'lax',
-        maxAge: 1 * 60 * 60 * 1000   // 8 hours
+        maxAge: 1 * 60 * 60 * 1000   // 1 hour
     }
 }));
 
@@ -41,22 +41,19 @@ const PORT = process.env.PORT || 3000;
 
 
 app.get('/', requireLogin, async (req, res) => {
-    data = await getStatus()
+    const data = await getStatus()
     res.render('index', { ...data, script: '/app.js' });
-})
+});
 
 app.get('/login', (req, res) => {
-    res.render('login', { error: null, panelName: process.env.PANEL_NAME });
+    res.render('login', { error: null });
 });
 
 app.post('/login', async (req, res) => {
     const ok = await checkPassword(req.body.password || '');
 
     if (!ok) {
-        return res.status(401).render('login', {
-            error: 'Wrong password',
-            panelName: process.env.PANEL_NAME
-        });
+        return res.status(401).render('login', { error: 'Wrong password' });
     }
 
     req.session.regenerate((err) => {
