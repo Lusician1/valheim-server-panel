@@ -1,72 +1,182 @@
+/* ---------- Design tokens (change colours here only) ---------- */
+:root {
+  --bg: #0b1d24;
+  --surface: #102a33;
+  --surface-2: #143541;
+  --hero: #133845;
+  --border: #1f4855;
+  --text: #e8eef0;
+  --muted: #8fa9b2;
+  --gold: #d4a84b;
+  --gold-dim: #8c6d2c;
+  --green: #3fa34d;
+  --red: #d9534f;
+  --red-text: #f0a3a1;
+  --yellow: #e0a92e;
+  --grey: #757575;
+
+  --font-heading: "Cinzel", serif;
+  --font-body: "Inter", system-ui, sans-serif;
+  --font-mono: "JetBrains Mono", monospace;
+
+  --radius: 14px;
+  --radius-sm: 10px;
+}
+
+/* ---------- Base ---------- */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
 body {
   margin: 0;
-  background-color: #01485a;
-  color: whitesmoke;
+  min-height: 100vh;
+  background-color: var(--bg);
+  color: var(--text);
+  font-family: var(--font-body);
+  line-height: 1.5;
 }
-
-main {
-  width: 90%;
-  margin: 0 auto;
-}
-
-header {
-  margin: 0 auto;
-}
-
-.server-status {
-  margin-left: 2em;
-}
-
-.flex-list {
-  padding: 0;
-  gap: 0.5rem;
-  margin: 16px auto;
-  list-style-type: none;
-  display: flex;
-  justify-content: center;
-}
-
-/* Typography */
 
 h1,
 h2,
-h3 {
-  text-align: center;
+h3,
+p {
+  margin: 0;
 }
 
-/* Buttons */
-
-.btn {
-  border: none;
-  background-color: #757575;
-  border-radius: 10px;
-  padding: 0.7rem;
-  transition: 100ms ease-in-out;
+ul {
+  margin: 0;
+  padding: 0;
+  list-style: none;
 }
 
-.start {
-  background-color: #2e7d32;
+/* ---------- Top bar ---------- */
+.topbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1.25rem 2.5rem;
+  background-color: var(--surface);
+  border-bottom: 1px solid var(--border);
 }
 
-.stop {
-  background-color: #c62828;
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 0.875rem;
 }
 
-.btn:focus {
-    outline: black 5px solid;
-}
-.btn:active {
-  transition: 100ms ease-in-out;
-  background-color: #d6c5c5;
+.brand-mark {
+  display: grid;
+  place-items: center;
+  width: 2.5rem;
+  height: 2.5rem;
+  border: 2px solid var(--gold);
+  border-radius: var(--radius-sm);
+  color: var(--gold);
+  font-family: var(--font-heading);
+  font-weight: 700;
+  font-size: 1.25rem;
 }
 
-/* Status badges */
+.brand-name {
+  font-family: var(--font-heading);
+  font-size: 1.375rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
 
+.brand-sub {
+  font-size: 0.8125rem;
+  color: var(--muted);
+}
+
+/* ---------- Page content ---------- */
+.content {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 2rem 2.5rem 2.5rem;
+}
+
+/* ---------- Cards ---------- */
+.card {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  padding: 1.5rem;
+  background-color: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+}
+
+.card-title {
+  font-family: var(--font-heading);
+  font-size: 0.9375rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--gold);
+}
+
+.eyebrow {
+  font-size: 0.8125rem;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+.muted {
+  color: var(--muted);
+}
+
+/* ---------- Status hero ---------- */
+.hero {
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 1.5rem;
+  padding: 1.75rem 2rem;
+  background-color: var(--hero);
+}
+
+.hero-status {
+  display: flex;
+  flex-direction: column;
+  gap: 0.625rem;
+}
+
+.meta {
+  font-size: 0.875rem;
+  color: var(--muted);
+}
+
+.meta b {
+  color: var(--text);
+  font-weight: 600;
+}
+
+.controls {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+}
+
+/* ---------- Status badge (dot + text) ---------- */
 .badge {
+  --dot: var(--grey); /* default colour, each state overrides it */
   display: inline-flex;
   align-items: center;
   gap: 0.4em;
-  font-weight: bold;
+  font-weight: 700;
+  text-transform: capitalize;
 }
 
 .badge::before {
@@ -75,21 +185,191 @@ h3 {
   width: 0.7em;
   height: 0.7em;
   border-radius: 50%;
-  background: #757575;
+  background: var(--dot);
+  box-shadow: 0 0 0 0.3em color-mix(in srgb, var(--dot) 20%, transparent);
 }
 
-.badge.active::before {
-  background: #2e7d32;
+/* Big version used in the hero card */
+.badge-lg {
+  gap: 0.6em;
+  font-family: var(--font-heading);
+  font-size: 2.25rem;
 }
-.badge.inactive::before {
-  background: #c62828;
+
+.badge-lg::before {
+  width: 0.45em;
+  height: 0.45em;
+  box-shadow: 0 0 0 0.17em color-mix(in srgb, var(--dot) 20%, transparent);
 }
-.badge.failed::before {
-  background: #c62828;
+
+/* One rule per systemctl state */
+.badge.active       { --dot: var(--green); }
+.badge.inactive     { --dot: var(--red); }
+.badge.failed       { --dot: var(--red); }
+.badge.activating   { --dot: var(--yellow); }
+.badge.deactivating { --dot: var(--yellow); }
+.badge.unknown      { --dot: var(--grey); }
+
+/* ---------- Buttons ---------- */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.8rem 1.4rem;
+  border: 1.5px solid transparent;
+  border-radius: var(--radius-sm);
+  background: none;
+  color: var(--text);
+  font: inherit;
+  font-size: 0.9375rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 120ms ease, filter 120ms ease, transform 80ms ease;
 }
-.badge.activating::before {
-  background: #f9a825;
+
+.btn:hover {
+  filter: brightness(1.12);
 }
-.badge.unknown::before {
-  background: #757575;
+
+.btn:active {
+  transform: translateY(1px);
+}
+
+.btn:focus-visible {
+  outline: 2px solid var(--gold);
+  outline-offset: 2px;
+}
+
+.btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.btn-start {
+  background-color: var(--green);
+}
+
+.btn-stop {
+  border-color: var(--red);
+  color: var(--red-text);
+}
+
+.btn-stop:hover {
+  background-color: color-mix(in srgb, var(--red) 15%, transparent);
+}
+
+.btn-secondary {
+  background-color: var(--surface-2);
+  border-color: var(--border);
+}
+
+.btn-primary {
+  width: 100%;
+  background-color: var(--gold);
+  color: #1a1408;
+  font-weight: 700;
+}
+
+.btn-ghost {
+  padding: 0.55rem 1rem;
+  border-color: var(--border);
+  font-size: 0.875rem;
+}
+
+/* ---------- Login page ---------- */
+.login-screen {
+  display: grid;
+  place-items: center;
+  min-height: 100vh;
+  padding: 1rem;
+  background: radial-gradient(circle at 50% 30%, var(--hero) 0%, var(--bg) 60%);
+}
+
+.login-card {
+  width: 100%;
+  max-width: 400px;
+  gap: 1.375rem;
+  padding: 2.5rem;
+  border-radius: 16px;
+}
+
+.login-brand {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.75rem;
+  text-align: center;
+}
+
+.login-title {
+  font-family: var(--font-heading);
+  font-size: 1.625rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.login-form {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.label {
+  font-size: 0.8125rem;
+  font-weight: 600;
+  color: var(--muted);
+}
+
+.input {
+  height: 2.875rem;
+  margin-bottom: 0.875rem;
+  padding: 0 0.875rem;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  background-color: var(--bg);
+  color: var(--text);
+  font: inherit;
+}
+
+.input:focus {
+  outline: none;
+  border-color: var(--gold);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--gold) 25%, transparent);
+}
+
+.error {
+  padding: 0.625rem 0.75rem;
+  border: 1px solid color-mix(in srgb, var(--red) 40%, transparent);
+  border-radius: 8px;
+  background-color: color-mix(in srgb, var(--red) 12%, transparent);
+  color: var(--red-text);
+  font-size: 0.8125rem;
+}
+
+
+
+/* ---------- Phones and small screens ---------- */
+@media (max-width: 700px) {
+  .topbar {
+    padding: 1rem 1.25rem;
+  }
+
+  .brand-sub {
+    display: none;
+  }
+
+  .content {
+    padding: 1.25rem;
+  }
+
+  .hero {
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 1.5rem;
+  }
+
+  .badge-lg {
+    font-size: 1.75rem;
+  }
 }

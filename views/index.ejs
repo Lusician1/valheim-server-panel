@@ -1,25 +1,29 @@
-<!DOCTYPE html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title><%= panelName %></title>
-    <link rel="stylesheet" href="/style.css" />
-    <script src="/app.js" defer></script>
-  </head>
-  <body>
-    <main>
-      <header><h1><%= panelName %></h1></header>
-      <section class="server-status">
-        <p>Server status:</p>
-        <p id="status" class="badge <%= status %>"><%= status %></p>
-      </section>
-      <section class="control-buttons">
-        <ul class="flex-list">
-          <li><button id="startSrv" class="btn start">Start server</button></li>
-          <li><button id="stopSrv" class="btn stop">Stop server</button></li>
-        </ul>
-      </section>
-    </main>
-  </body>
-</html>
+<header class="topbar">
+  <div class="brand">
+    <div class="brand-mark">V</div>
+    <div>
+      <p class="brand-name"><%= panelName %></p>
+      <p class="brand-sub">Server control panel</p>
+    </div>
+  </div>
+  <form method="post" action="/logout">
+    <button class="btn btn-ghost">Log out</button>
+  </form>
+</header>
+
+<main class="content">
+  <section class="card hero">
+    <div class="hero-status">
+      <p class="eyebrow">Server status</p>
+      <p id="status" class="badge badge-lg <%= status %>"><%= status %></p>
+      <p class="meta">
+        Last checked
+        <b id="checkedAt"><%= new Date(checkedAt).toLocaleTimeString('nb-NO', { timeZone: 'Europe/Oslo' }) %></b>
+      </p>
+    </div>
+    <ul class="controls">
+      <li><button id="startSrv" class="btn btn-start">Start</button></li>
+      <li><button id="stopSrv" class="btn btn-stop">Stop</button></li>
+    </ul>
+  </section>
+</main>
