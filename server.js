@@ -8,7 +8,7 @@ if (missing.length > 0) {
 }
 
 
-// Express
+/* ---------------------- Express ---------------------- */
 const express = require('express');
 const app = express();
 const session = require('express-session');
@@ -32,14 +32,15 @@ app.set('view engine', 'ejs');
 app.use(expressLayouts);
 app.locals.panelName = process.env.PANEL_NAME;
 
-// Import scripts
+/* ------------------- Import scripts ------------------- */
+const { spawn } = require ( 'child_process' );
 const { checkPassword, requireLogin } = require('./lib/auth');
 const { getStatus, controlServer } = require('./lib/valheim');
 
-//Port where the panel runs
+/* --------------- Port the panel runs on --------------- */
 const PORT = process.env.PORT || 3000;
 
-
+/* ----------------------- Routes ----------------------- */
 app.get('/', requireLogin, async (req, res) => {
     const data = await getStatus()
     res.render('index', { ...data, script: '/app.js' });
@@ -87,6 +88,53 @@ app.post('/api/server/:action', requireLogin, async (req, res) => {
 app.get('/api/status', requireLogin, async (req, res) => {
     res.json(await getStatus());
 });
+
+app.get('/api/ping-stream', requireLogin, (req, res) => {
+    const countFlag = process.platform === 'linux' ? '-c' : '-n';
+    const child = spawn('ping', [countFlag, '5', '127.0.0.1']);
+    
+    res.setHeader('Content-Type', 'text/event-stream');
+    res.setHeader('Cache-Control', 'no-cache');
+    res.flushHeaders();
+    
+    child.stdout.on('data', (chunk) => {
+        const lines = chunk.toString().split('\n');
+        for (const line of lines) {
+            const text = line.trim();
+            if (text === '') continue;
+            res.write(`data: ${text}\n\n`);
+            
+        }
+    });
+
+    child.on('close', (code) => { 
+        res.write(`event: done\ndata: ${code}\n\n`);
+        res.end();
+    });
+    req.on('close', () => child.kill());
+});
+
+/* TEST */
+app.get('/api/demo-stream', requireLogin, (req, res) => {
+    res.setHeader('Content-Type', 'text/event-stream');
+    res.setHeader('Cache-Control', 'no-cache');
+    res.flushHeaders();
+
+    let count = 1;
+    const timer = setInterval(() => {
+        res.write(`data: Line ${count}\n\n`);
+        count++;
+
+        if (count > 5) {
+            clearInterval(timer);
+            res.write('event: done\ndata: finished\n\n');
+            res.end();
+        }
+    }, 1000);
+
+    req.on('close', () => clearInterval(timer));
+});
+/* ENDTEST */
 
 app.listen(PORT, () => {
     console.log(`Panel running on http://localhost:${PORT}`);
