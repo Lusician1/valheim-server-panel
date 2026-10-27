@@ -81,7 +81,7 @@ app.get("/about", (req, res) => {
 
 app.post("/api/server/:action", requireLogin, async (req, res) => {
   if (isUpdating()) {
-    throw new Error("Server is updating");
+    return res.status(409).json({ ok: false, error: "Server is updating" });
   }
   try {
     await controlServer(req.params.action);
@@ -112,7 +112,7 @@ app.get("/api/update/stream", requireLogin, (req, res) => {
 });
 
 app.get("/api/status", requireLogin, async (req, res) => {
-  res.json(await getStatus());
+  res.json({ ...(await getStatus()), updating: isUpdating() });
 });
 
 /* TEST */
