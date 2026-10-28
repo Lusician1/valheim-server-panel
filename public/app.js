@@ -69,6 +69,7 @@ async function serverAction(action, button) {
       alert("Failed: " + data.error);
     }
   } catch (error) {
+    console.error(error)
     alert("Could not reach the panel.");
   } finally {
     busy = false;
