@@ -38,7 +38,6 @@ const { spawn } = require("child_process");
 const { checkPassword, requireLogin } = require("./lib/auth");
 const { getStatus, controlServer } = require("./lib/valheim");
 const { startUpdate, subscribe, isUpdating } = require("./lib/update");
-const { error } = require("console");
 
 /* --------------- Port the panel runs on --------------- */
 const PORT = process.env.PORT || 3000;
