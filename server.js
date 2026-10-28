@@ -158,6 +158,10 @@ app.get("/api/demo-stream", requireLogin, (req, res) => {
 
   req.on("close", () => clearInterval(timer));
 });
+
+app.get("/test", (req, res) => {
+  res.render(test);
+});
 /* ENDTEST */
 
 app.listen(PORT, () => {
