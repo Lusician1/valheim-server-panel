@@ -160,7 +160,7 @@ app.get("/api/demo-stream", requireLogin, (req, res) => {
 });
 
 app.get("/test", (req, res) => {
-  res.render(test);
+  res.render("test");
 });
 /* ENDTEST */
 
