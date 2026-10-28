@@ -138,30 +138,6 @@ app.get("/api/ping-stream", requireLogin, (req, res) => {
   });
   req.on("close", () => child.kill());
 });
-
-app.get("/api/demo-stream", requireLogin, (req, res) => {
-  res.setHeader("Content-Type", "text/event-stream");
-  res.setHeader("Cache-Control", "no-cache");
-  res.flushHeaders();
-
-  let count = 1;
-  const timer = setInterval(() => {
-    res.write(`data: Line ${count}\n\n`);
-    count++;
-
-    if (count > 5) {
-      clearInterval(timer);
-      res.write("event: done\ndata: finished\n\n");
-      res.end();
-    }
-  }, 1000);
-
-  req.on("close", () => clearInterval(timer));
-});
-
-app.get("/test", (req, res) => {
-  res.render("test");
-});
 /* ENDTEST */
 
 app.listen(PORT, () => {
