@@ -45,7 +45,6 @@ async function loadStatus() {
     badge.className = "badge badge-lg unknown";
   }
 }
-loadStatus();
 
 async function serverAction(action, button) {
   const originalText = button.textContent;
@@ -129,6 +128,29 @@ function setBar(id, value) {
   button.classList.toggle("high", value >= 85);
 }
 
+function makeLogLine(line) {
+  const item = document.createElement("li");
+
+  const time = document.createElement("span");
+  time.className = "log-time";
+  time.textContent = line.time;
+
+  item.append(time, " ", line.message);
+  return item;
+}
+
+async function loadLogs() {
+  try {
+    const response = await fetch("/api/logs");
+    const lines = await response.json();
+    document
+      .getElementById("serverLog")
+      .replaceChildren(...lines.map(makeLogLine));
+  } catch (error) {
+    console.error(error);
+  }
+}
+
 startBtn.addEventListener("click", () => serverAction("start", startBtn));
 stopBtn.addEventListener("click", () => serverAction("stop", stopBtn));
 restartBtn.addEventListener("click", () => serverAction("restart", restartBtn));
@@ -154,4 +176,7 @@ updateBtn.addEventListener("click", async () => {
   }
 });
 
+loadStatus();
+loadLogs();
+setInterval(loadLogs, 10 * 1000);
 setInterval(loadStatus, 5 * 1000);
