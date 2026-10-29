@@ -143,9 +143,16 @@ async function loadLogs() {
   try {
     const response = await fetch("/api/logs");
     const lines = await response.json();
-    document
-      .getElementById("serverLog")
-      .replaceChildren(...lines.map(makeLogLine));
+
+    const box = document.getElementById("serverLog");
+    const wasAtBottom =
+      box.scrollHeight - box.scrollTop - box.clientHeight < 20;
+
+    box.replaceChildren(...lines.map(makeLogLine));
+
+    if (wasAtBottom) {
+      box.scrollTop = box.scrollHeight;
+    }
   } catch (error) {
     console.error(error);
   }
