@@ -39,6 +39,7 @@ const { checkPassword, requireLogin } = require("./lib/auth");
 const { getStatus, controlServer } = require("./lib/valheim");
 const { startUpdate, subscribe, isUpdating } = require("./lib/update");
 const { getSystemStats } = require("./lib/system");
+const { getRecentLogs } = require("./lib/logs");
 
 /* --------------- Port the panel runs on --------------- */
 const PORT = process.env.PORT || 3000;
@@ -114,6 +115,14 @@ app.get("/api/update/stream", requireLogin, (req, res) => {
 app.get("/api/status", requireLogin, async (req, res) => {
   const [status, system] = await Promise.all([getStatus(), getSystemStats()]);
   res.json({ ...status, updating: isUpdating(), system });
+});
+
+app.get("/api/logs", requireLogin, async (req, res) => {
+  try {
+    res.json(await getRecentLogs());
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
 });
 
 /* TEST */

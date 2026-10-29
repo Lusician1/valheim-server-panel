@@ -408,7 +408,7 @@ ul {
   background-color: var(--red);
 }
 
-/* --------------- Update Status --------------- */
+/* ------------------- Logs -------------------- */
 .log-box {
   margin: 0;
   max-height: 22rem;
@@ -424,6 +424,15 @@ ul {
   word-break: break-word;
 }
 
+.log-box li + li {
+  margin-top: 0.25rem;
+}
+
+.log-time {
+  color: var(--gold-dim);
+}
+
+/* --------------- Update Status --------------- */
 .pill {
   padding: 0.25rem 0.65rem;
   border: 1px solid var(--border);
