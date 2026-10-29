@@ -38,14 +38,15 @@ const { spawn } = require("child_process");
 const { checkPassword, requireLogin } = require("./lib/auth");
 const { getStatus, controlServer } = require("./lib/valheim");
 const { startUpdate, subscribe, isUpdating } = require("./lib/update");
+const { getSystemStats } = require("./lib/system");
 
 /* --------------- Port the panel runs on --------------- */
 const PORT = process.env.PORT || 3000;
 
 /* ----------------------- Routes ----------------------- */
 app.get("/", requireLogin, async (req, res) => {
-  const data = await getStatus();
-  res.render("index", { ...data, script: "/app.js" });
+  const [status, system] = await Promise.all([getStatus(), getSystemStats()]);
+  res.render("index", { ...status, system, script: "/app.js" });
 });
 
 app.get("/login", (req, res) => {
@@ -111,7 +112,8 @@ app.get("/api/update/stream", requireLogin, (req, res) => {
 });
 
 app.get("/api/status", requireLogin, async (req, res) => {
-  res.json({ ...(await getStatus()), updating: isUpdating() });
+  const [status, system] = await Promise.all([getStatus(), getSystemStats()]);
+  res.json({ ...status, updating: isUpdating(), system });
 });
 
 /* TEST */

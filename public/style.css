@@ -372,6 +372,42 @@ ul {
   font-size: 0.8125rem;
 }
 
+/* ---------------- System Stats --------------- */
+.stats {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(14rem, 1fr));
+  gap: 1.5rem;
+}
+
+.stat-value {
+  font-family: var(--font-heading);
+  font-size: 2rem;
+  font-weight: 700;
+}
+
+.stat-sub {
+  font-size: 0.8125rem;
+  color: var(--muted);
+}
+
+.bar {
+  height: 8px;
+  border-radius: 4px;
+  background-color: var(--surface);
+  overflow: hidden;
+}
+
+.bar-fill {
+  height: 100%;
+  border-radius: 4px;
+  background-color: var(--gold);
+  transition: width 400ms ease;
+}
+
+.bar-fill.high {
+  background-color: var(--red);
+}
+
 /* --------------- Update Status --------------- */
 .log-box {
   margin: 0;

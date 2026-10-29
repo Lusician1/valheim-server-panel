@@ -32,6 +32,13 @@ async function loadStatus() {
     checkedAt.textContent = new Date(data.checkedAt).toLocaleTimeString(
       "nb-NO",
     );
+    document.getElementById("cpuValue").textContent = data.system.cpu;
+    setBar("cpuBar", data.system.cpu);
+    document.getElementById("memoryValue").textContent =
+      data.system.memory.used;
+    setBar("memoryBar", data.system.memory.percent);
+    document.getElementById("diskValue").textContent = data.system.disk.used;
+    setBar("diskBar", data.system.disk.percent);
   } catch (error) {
     buttons.forEach((btn) => (btn.disabled = true));
     badge.textContent = "panel offline";
@@ -69,7 +76,7 @@ async function serverAction(action, button) {
       alert("Failed: " + data.error);
     }
   } catch (error) {
-    console.error(error)
+    console.error(error);
     alert("Could not reach the panel.");
   } finally {
     busy = false;
@@ -114,6 +121,12 @@ function watchUpdate() {
     buttons.forEach((btn) => (btn.disabled = false));
     loadStatus();
   });
+}
+
+function setBar(id, value) {
+  const button = document.getElementById(id);
+  button.style.width = value + "%";
+  button.classList.toggle("high", value >= 85);
 }
 
 startBtn.addEventListener("click", () => serverAction("start", startBtn));
