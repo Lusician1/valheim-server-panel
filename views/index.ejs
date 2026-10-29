@@ -18,15 +18,61 @@
       <p id="status" class="badge badge-lg <%= status %>"><%= status %></p>
       <p class="meta">
         Last checked
-        <b id="checkedAt"><%= new Date(checkedAt).toLocaleTimeString('nb-NO', { timeZone: 'Europe/Oslo' }) %></b>
+        <b id="checkedAt"
+          ><%= new Date(checkedAt).toLocaleTimeString('nb-NO', { timeZone:
+          'Europe/Oslo' }) %></b
+        >
       </p>
     </div>
     <ul class="controls">
       <li><button id="startSrv" class="btn btn-start">Start</button></li>
       <li><button id="stopSrv" class="btn btn-stop">Stop</button></li>
-      <li><button id="restartSrv" class="btn btn-secondary">Restart</button></li>
+      <li>
+        <button id="restartSrv" class="btn btn-secondary">Restart</button>
+      </li>
       <li><button id="updateSrv" class="btn btn-secondary">Update</button></li>
     </ul>
+  </section>
+
+  <section class="stats">
+    <div class="card">
+      <!-- CPU -->
+      <h2 class="card-title">CPU</h2>
+      <p class="stat-value"><span id="cpuValue"><%= system.cpu %></span>%</p>
+      <div class="bar">
+        <div
+          id="cpuBar"
+          class="bar-fill"
+          style="width: <%= system.cpu %>%"
+        ></div>
+        <!-- Memory -->
+      </div>
+      <h2 class="card-title">Memory</h2>
+      <p class="stat-value">
+        <span id="memoryValue"><%= system.memory.used %></span>GB
+      </p>
+      <p class="stat-sub">of <%= system.memory.total %>GB</p>
+      <div class="bar">
+        <div
+          id="memoryBar"
+          class="bar-fill"
+          style="width: <%= system.memory.percent %>%"
+        ></div>
+        <!-- Disk -->
+      </div>
+      <h2 class="card-title">Disk</h2>
+      <p class="stat-value">
+        <span id="diskValue"><%= system.disk.used %></span>GB
+      </p>
+      <p class="stat-sub">of <%= system.disk.total %> GB</p>
+      <div class="bar">
+        <div
+          id="diskBar"
+          class="bar-fill"
+          style="width: <%= system.disk.percent %>%"
+        ></div>
+      </div>
+    </div>
   </section>
   <section id="updateCard" class="card" hidden>
     <div class="card-head">
