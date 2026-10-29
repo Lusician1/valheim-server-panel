@@ -148,6 +148,13 @@ async function loadLogs() {
     const wasAtBottom =
       box.scrollHeight - box.scrollTop - box.clientHeight < 20;
 
+    if (lines.length === 0) {
+      const empty = document.createElement("li");
+      empty.textContent = "No log lines yet";
+      empty.className = "muted";
+      box.replaceChildren(empty);
+      return;
+    }
     box.replaceChildren(...lines.map(makeLogLine));
 
     if (wasAtBottom) {
