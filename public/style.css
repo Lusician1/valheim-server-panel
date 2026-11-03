@@ -44,6 +44,10 @@
   box-sizing: border-box;
 }
 
+html {
+  font-size: 90%;
+}
+
 body {
   background-image: url(img/8715267.webp);
   background-size: cover;
