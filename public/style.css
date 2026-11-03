@@ -20,7 +20,7 @@
   --hero: #133845;
   --border: #1f4855;
   --text: #e8eef0;
-  --muted: #8fa9b2;
+  --muted: #c2ebf8;
   --gold: #d4a84b;
   --gold-dim: #8c6d2c;
   --green: #3fa34d;
@@ -49,7 +49,7 @@ html {
 }
 
 body {
-  background-image: url(img/8715267.webp);
+  background-image: url(img/kmjkrg4s81h61.jpg);
   background-size: cover;
   margin: 0;
   min-height: 100vh;
@@ -102,12 +102,12 @@ ul {
   color: var(--gold);
   font-family: var(--font-heading);
   font-weight: 700;
-  font-size: 1.25rem;
+  font-size: 1.5rem;
 }
 
 .brand-name {
   font-family: var(--font-heading);
-  font-size: 1.375rem;
+  font-size: 2rem;
   font-weight: 700;
   letter-spacing: 0.08em;
   text-transform: uppercase;
@@ -141,7 +141,7 @@ ul {
 
 .card-title {
   font-family: var(--font-heading);
-  font-size: 0.9375rem;
+  font-size: 1.2rem;
   font-weight: 700;
   letter-spacing: 0.08em;
   text-transform: uppercase;
@@ -154,11 +154,7 @@ ul {
   justify-content: space-between;
 }
 
-.eyebrow {
-  font-size: 0.8125rem;
-  font-weight: 600;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
+p.card-title {
   color: var(--muted);
 }
 
@@ -201,7 +197,7 @@ ul {
 
 /* ---------- Status badge (dot + text) ---------- */
 .badge {
-  --dot: var(--grey); /* default colour, each state overrides it */
+  --dot: var(--grey);
   display: inline-flex;
   align-items: center;
   gap: 0.4em;
@@ -219,7 +215,6 @@ ul {
   box-shadow: 0 0 0 0.3em color-mix(in srgb, var(--dot) 20%, transparent);
 }
 
-/* Big version used in the hero card */
 .badge-lg {
   gap: 0.6em;
   font-family: var(--font-heading);
@@ -232,7 +227,6 @@ ul {
   box-shadow: 0 0 0 0.17em color-mix(in srgb, var(--dot) 20%, transparent);
 }
 
-/* One rule per systemctl state */
 .badge.active {
   --dot: var(--green);
 }
@@ -420,7 +414,7 @@ ul {
 .bar-fill {
   height: 100%;
   border-radius: 4px;
-  background-color: var(--gold);
+  background-color: var(--gold-dim);
   transition: width 400ms ease;
 }
 
@@ -478,9 +472,10 @@ ul {
 /* ---------- Phones and small screens ---------- */
 @media (max-width: 700px) {
   body {
-    background-image: url(img/4e15c95ed475866e52e25696b40e0abd.png);
-    background-size: cover;
+    background-image: url(img/background_mobile.jpg);
     background-position: center;
+    background-repeat: no-repeat;
+    padding: 5%;
   }
   .topbar {
     padding: 1rem 1.25rem;
