@@ -45,6 +45,8 @@
 }
 
 body {
+  background-image: url(img/8715267.webp);
+  background-size: cover;
   margin: 0;
   min-height: 100vh;
   background-color: var(--bg);
@@ -471,6 +473,11 @@ ul {
 
 /* ---------- Phones and small screens ---------- */
 @media (max-width: 700px) {
+  body {
+    background-image: url(img/4e15c95ed475866e52e25696b40e0abd.png);
+    background-size: cover;
+    background-position: center;
+  }
   .topbar {
     padding: 1rem 1.25rem;
   }

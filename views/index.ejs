@@ -35,8 +35,8 @@
   </section>
 
   <section class="stats">
+    <!-- CPU -->
     <div class="card">
-      <!-- CPU -->
       <h2 class="card-title">CPU</h2>
       <p class="stat-value"><span id="cpuValue"><%= system.cpu %></span>%</p>
       <div class="bar">
@@ -45,26 +45,29 @@
           class="bar-fill"
           style="width: <%= system.cpu %>%"
         ></div>
-        <!-- Memory -->
       </div>
+    </div>
+    <!-- Memory -->
+    <div class="card">
       <h2 class="card-title">Memory</h2>
       <p class="stat-value">
         <span id="memoryValue"><%= system.memory.used %></span>GB
       </p>
-      <p class="stat-sub">of <%= system.memory.total %>GB</p>
       <div class="bar">
         <div
           id="memoryBar"
           class="bar-fill"
           style="width: <%= system.memory.percent %>%"
         ></div>
-        <!-- Disk -->
       </div>
+      <p class="stat-sub">of <%= system.memory.total %>GB</p>
+    </div>
+    <!-- Disk -->
+    <div class="card">
       <h2 class="card-title">Disk</h2>
       <p class="stat-value">
         <span id="diskValue"><%= system.disk.used %></span>GB
       </p>
-      <p class="stat-sub">of <%= system.disk.total %> GB</p>
       <div class="bar">
         <div
           id="diskBar"
@@ -72,6 +75,7 @@
           style="width: <%= system.disk.percent %>%"
         ></div>
       </div>
+      <p class="stat-sub">of <%= system.disk.total %> GB</p>
     </div>
   </section>
   <!-- Log -->
