@@ -1,3 +1,17 @@
+/* ------- Font faces ------- */
+@font-face {
+  font-family: "Norse";
+  src: url("/fonts/norse-font/Norse-KaWl.otf") format("opentype");
+  font-weight: normal;
+  font-style: normal;
+}
+@font-face {
+  font-family: "Norse";
+  src: url("/fonts/norse-font/NorseBold-2Kge.otf") format("opentype");
+  font-weight: bold;
+  font-style: normal;
+}
+
 /* ---------- Design tokens (change colours here only) ---------- */
 :root {
   --bg: #0b1d24;
@@ -15,9 +29,9 @@
   --yellow: #e0a92e;
   --grey: #757575;
 
-  --font-heading: "Cinzel", serif;
-  --font-body: "Inter", system-ui, sans-serif;
-  --font-mono: "JetBrains Mono", monospace;
+  --font-heading: "Norse";
+  --font-body: "Norse";
+  --font-mono: "Norse";
 
   --radius: 14px;
   --radius-sm: 10px;
