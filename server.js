@@ -39,7 +39,8 @@ const { checkPassword, requireLogin } = require("./lib/auth");
 const { getStatus, controlServer } = require("./lib/valheim");
 const { startUpdate, subscribe, isUpdating } = require("./lib/update");
 const { getSystemStats } = require("./lib/system");
-const { getRecentLogs } = require("./lib/logs");
+const { getRecentLogs, getPlayers } = require("./lib/logs");
+const { error } = require("console");
 
 /* --------------- Port the panel runs on --------------- */
 const PORT = process.env.PORT || 3000;
@@ -120,6 +121,14 @@ app.get("/api/status", requireLogin, async (req, res) => {
 app.get("/api/logs", requireLogin, async (req, res) => {
   try {
     res.json(await getRecentLogs());
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+});
+
+app.get("/api/players", requireLogin, async (req, res) => {
+  try {
+    res.json(await getPlayers());
   } catch (error) {
     res.status(500).json({ error: error.message });
   }

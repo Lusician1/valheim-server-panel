@@ -190,6 +190,42 @@ updateBtn.addEventListener("click", async () => {
   }
 });
 
+function makePlayerRow(player) {
+  const item = document.createElement("li");
+
+  const playerName = document.createElement("span");
+  playerName.textContent = player.name;
+  const playerLastSeen = document.createElement("span");
+  playerLastSeen.className = "muted";
+  playerLastSeen.textContent = player.lastSeen;
+  item.append(playerName, playerLastSeen);
+  return item;
+}
+
+async function loadPlayers() {
+  try {
+    const response = await fetch("/api/players");
+    const data = await response.json();
+
+    const list = document.getElementById("playerList");
+    const playerCount = document.getElementById("playerCount");
+    playerCount.textContent = data.online;
+    if (data.seen.length === 0) {
+      const empty = document.createElement("li");
+      empty.textContent = "No players online since last restart!";
+      empty.className = "muted";
+      list.replaceChildren(empty);
+      return;
+    }
+    list.replaceChildren(...data.seen.map(makePlayerRow));
+  } catch (error) {
+    console.error(error);
+  }
+}
+
+loadPlayers();
+setInterval(loadPlayers, 30 * 1000);
+
 loadStatus();
 loadLogs();
 setInterval(loadLogs, 10 * 1000);
