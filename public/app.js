@@ -190,6 +190,20 @@ updateBtn.addEventListener("click", async () => {
   }
 });
 
+function formatLastSeen(iso) {
+  const date = new Date(iso);
+  const isToday = date.toDateString() === new Date().toDateString();
+
+  return isToday
+    ? date.toLocaleTimeString("nb-NO", { hour: "2-digit", minute: "2-digit" })
+    : date.toLocaleString("nb-NO", {
+        day: "numeric",
+        month: "short",
+        hour: "2-digit",
+        minute: "2-digit",
+      });
+}
+
 function makePlayerRow(player) {
   const item = document.createElement("li");
 
@@ -197,7 +211,7 @@ function makePlayerRow(player) {
   playerName.textContent = player.name;
   const playerLastSeen = document.createElement("span");
   playerLastSeen.className = "muted";
-  playerLastSeen.textContent = player.lastSeen;
+  playerLastSeen.textContent = formatLastSeen(player.lastSeen);
   item.append(playerName, playerLastSeen);
   return item;
 }
