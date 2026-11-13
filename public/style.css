@@ -422,6 +422,19 @@ p.card-title {
   background-color: var(--red);
 }
 
+/* ------------------Players ------------------- */
+.player-list li {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.6rem 0.8rem;
+  border-radius: var(--radius-sm);
+  background-color: var(--surface-2);
+}
+
+.player-list li + li {
+  margin-top: 0.5rem;
+}
 /* ------------------- Logs -------------------- */
 .log-box {
   margin: 0;
