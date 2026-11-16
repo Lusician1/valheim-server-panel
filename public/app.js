@@ -5,10 +5,12 @@ const stopBtn = document.getElementById("stopSrv");
 const restartBtn = document.getElementById("restartSrv");
 const updateBtn = document.getElementById("updateSrv");
 const backupBtn = document.getElementById("backupSrv");
-const updateCard = document.getElementById("updateCard");
-const updateLog = document.getElementById("updateLog");
-const updateState = document.getElementById("updateState");
-let updateStream = null;
+const jobCard = document.getElementById("jobCard");
+const jobLog = document.getElementById("jobLog");
+const jobState = document.getElementById("jobState");
+const jobTitle = document.getElementById("jobTitle");
+const JOB_TITLES = { update: "Update output", backup: "Backup output" };
+let jobStream = null;
 
 async function loadStatus() {
   const badge = document.getElementById("status");
@@ -18,8 +20,8 @@ async function loadStatus() {
     const response = await fetch("/api/status");
     const data = await response.json();
 
-    if (data.updating) {
-      watchUpdate();
+    if (data.job) {
+      watchJob(data.job);
     }
 
     if (!busy) {
@@ -86,36 +88,35 @@ async function serverAction(action, button) {
   }
 }
 
-function watchUpdate() {
-  if (updateStream) return;
+function watchJob(name) {
+  if (jobStream) return;
 
   busy = true;
   buttons.forEach((btn) => (btn.disabled = true));
 
-  updateCard.hidden = false;
-  updateState.textContent = "Running";
-  updateState.className = "pill running";
+  jobTitle.textContent = JOB_TITLES[name];
+  jobCard.hidden = false;
+  jobState.textContent = "Running";
+  jobState.className = "pill running";
 
-  updateStream = new EventSource("/api/update/stream");
+  jobStream = new EventSource(`/api/${name}/stream`);
 
-  updateStream.addEventListener("open", () => {
-    updateLog.textContent = "";
+  jobStream.addEventListener("open", () => {
+    jobLog.textContent = "";
   });
 
-  updateStream.addEventListener("line", (event) => {
-    updateLog.textContent += event.data + "\n";
-    updateLog.scrollTop = updateLog.scrollHeight;
+  jobStream.addEventListener("line", (event) => {
+    jobLog.textContent += event.data + "\n";
+    jobLog.scrollTop = jobLog.scrollHeight;
   });
 
-  updateStream.addEventListener("done", (event) => {
-    updateStream.close();
-    updateStream = null;
+  jobStream.addEventListener("done", (event) => {
+    jobStream.close();
+    jobStream = null;
 
     const success = event.data === "0";
-    updateState.textContent = success
-      ? "Finished"
-      : `Failed (code ${event.data})`;
-    updateState.className = success ? "pill success" : "pill failed";
+    jobState.textContent = success ? "Finished" : `Failed (code ${event.data})`;
+    jobState.className = success ? "pill success" : "pill failed";
 
     busy = false;
     buttons.forEach((btn) => (btn.disabled = false));
@@ -169,49 +170,35 @@ async function loadLogs() {
 startBtn.addEventListener("click", () => serverAction("start", startBtn));
 stopBtn.addEventListener("click", () => serverAction("stop", stopBtn));
 restartBtn.addEventListener("click", () => serverAction("restart", restartBtn));
-updateBtn.addEventListener("click", async () => {
-  if (
-    !confirm(
-      "Update the server? It will be stopped during the update, and players will be disconnected. Make sure all players have saved their characters.",
-    )
-  ) {
+
+async function startJob(name, confirmText) {
+  if (!confirm(confirmText)) {
     return;
   }
-
   try {
-    const response = await fetch("/api/update", { method: "POST" });
+    const response = await fetch(`/api/${name}`, { method: "POST" });
     const data = await response.json();
     if (!data.ok) {
       alert("Failed: " + data.error);
       return;
     }
-    watchUpdate();
+    watchJob(name);
   } catch (error) {
-    alert("Could not reach the panel.");
+    alert("Could not reach the panel");
   }
-});
-
-backupBtn.addEventListener("click", async () => {
-  if (
-    !confirm(
-      "Back up the world? The server will be restarted, and players will be disconnected. Make sure all players have saved their characters.",
-    )
-  ) {
-    return;
-  }
-
-  try {
-    const response = await fetch("/api/backup", { method: "POST" });
-    const data = await response.json();
-    if (!data.ok) {
-      alert("Failed: " + data.error);
-      return;
-    }
-    watchUpdate();
-  } catch (error) {
-    alert("Could not reach the panel.");
-  }
-});
+}
+updateBtn.addEventListener("click", () =>
+  startJob(
+    "update",
+    "Update the server? The server will have to stop during the update, which will kick all active players. This will result in loss of progress if they haven't saved...",
+  ),
+);
+backupBtn.addEventListener("click", () =>
+  startJob(
+    "backup",
+    "Back up the server? The server will have to stop during the backup, which will kick all active players. This will result in loss of progress if they haven't saved...",
+  ),
+);
 
 function formatLastSeen(iso) {
   const date = new Date(iso);

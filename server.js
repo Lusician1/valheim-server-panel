@@ -146,7 +146,15 @@ app.get("/api/backup/stream", requireLogin, (req, res) => {
 
 app.get("/api/status", requireLogin, async (req, res) => {
   const [status, system] = await Promise.all([getStatus(), getSystemStats()]);
-  res.json({ ...status, updating: updateJob.isRunning(), system });
+  res.json({
+    ...status,
+    job: updateJob.isRunning()
+      ? "update"
+      : backupJob.isRunning()
+        ? "backup"
+        : null,
+    system,
+  });
 });
 
 app.get("/api/logs", requireLogin, async (req, res) => {
