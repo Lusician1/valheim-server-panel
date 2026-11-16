@@ -37,11 +37,14 @@ app.locals.panelName = process.env.PANEL_NAME;
 const { spawn } = require("child_process");
 const { checkPassword, requireLogin } = require("./lib/auth");
 const { getStatus, controlServer } = require("./lib/valheim");
-const { startUpdate, subscribe, isUpdating } = require("./lib/update");
+const { createJob } = require("./lib/jobs");
 const { getSystemStats } = require("./lib/system");
 const { getRecentLogs, getPlayers } = require("./lib/logs");
-const { error } = require("console");
 
+const updateJob = createJob("Update", "/usr/local/sbin/valheim-update");
+const backupJob = createJob("Backup", "/usr/local/sbin/valheim-backup");
+
+const anyJobRunning = () => updateJob.isRunning() || backupJob.isRunning();
 /* --------------- Port the panel runs on --------------- */
 const PORT = process.env.PORT || 3000;
 
@@ -82,8 +85,8 @@ app.get("/about", (req, res) => {
 });
 
 app.post("/api/server/:action", requireLogin, async (req, res) => {
-  if (isUpdating()) {
-    return res.status(409).json({ ok: false, error: "Server is updating" });
+  if (anyJobRunning()) {
+    return res.status(409).json({ ok: false, error: "A job is running" });
   }
   try {
     await controlServer(req.params.action);
@@ -94,8 +97,13 @@ app.post("/api/server/:action", requireLogin, async (req, res) => {
 });
 
 app.post("/api/update", requireLogin, (req, res) => {
+  if (anyJobRunning()) {
+    return res
+      .status(409)
+      .json({ ok: false, error: "A job is already running" });
+  }
   try {
-    startUpdate();
+    updateJob.start();
     res.json({ ok: true });
   } catch (error) {
     res.status(409).json({ ok: false, error: error.message });
@@ -108,14 +116,37 @@ app.get("/api/update/stream", requireLogin, (req, res) => {
   res.flushHeaders();
 
   const send = (event, data) => res.write(`event: ${event}\ndata: ${data}\n\n`);
-  const unsubscribe = subscribe(send);
+  const unsubscribe = updateJob.subscribe(send);
 
   req.on("close", unsubscribe);
 });
 
+app.post("/api/backup", requireLogin, (req, res) => {
+  if (anyJobRunning()) {
+    return res
+      .status(409)
+      .json({ ok: false, error: "A job is already running" });
+  }
+  try {
+    backupJob.start();
+    res.json({ ok: true });
+  } catch (error) {
+    res.status(409).json({ ok: false, error: error.message });
+  }
+});
+
+app.get("/api/backup/stream", requireLogin, (req, res) => {
+  res.setHeader("Content-Type", "text/event-stream");
+  res.setHeader("Cache-Control", "no-cache");
+  res.flushHeaders();
+
+  const send = (event, data) => res.write(`event: ${event}\ndata: ${data}\n\n`);
+  req.on("close", backupJob.subscribe(send));
+});
+
 app.get("/api/status", requireLogin, async (req, res) => {
   const [status, system] = await Promise.all([getStatus(), getSystemStats()]);
-  res.json({ ...status, updating: isUpdating(), system });
+  res.json({ ...status, updating: updateJob.isRunning(), system });
 });
 
 app.get("/api/logs", requireLogin, async (req, res) => {

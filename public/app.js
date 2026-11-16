@@ -4,6 +4,7 @@ const startBtn = document.getElementById("startSrv");
 const stopBtn = document.getElementById("stopSrv");
 const restartBtn = document.getElementById("restartSrv");
 const updateBtn = document.getElementById("updateSrv");
+const backupBtn = document.getElementById("backupSrv");
 const updateCard = document.getElementById("updateCard");
 const updateLog = document.getElementById("updateLog");
 const updateState = document.getElementById("updateState");
@@ -179,6 +180,28 @@ updateBtn.addEventListener("click", async () => {
 
   try {
     const response = await fetch("/api/update", { method: "POST" });
+    const data = await response.json();
+    if (!data.ok) {
+      alert("Failed: " + data.error);
+      return;
+    }
+    watchUpdate();
+  } catch (error) {
+    alert("Could not reach the panel.");
+  }
+});
+
+backupBtn.addEventListener("click", async () => {
+  if (
+    !confirm(
+      "Back up the world? The server will be restarted, and players will be disconnected. Make sure all players have saved their characters.",
+    )
+  ) {
+    return;
+  }
+
+  try {
+    const response = await fetch("/api/backup", { method: "POST" });
     const data = await response.json();
     if (!data.ok) {
       alert("Failed: " + data.error);
