@@ -4,13 +4,13 @@ A web control panel for my self-hosted Valheim server. (Work in progress)
 
 ## Goal
 
-A neat looking control panel for controlling updates, mods, backups, etc.
+A stylish web-panel for controlling and monitoring my server
 
 ## Current setup
 
 - Server OS: Ubuntu live server
 - How the game runs: systemd service with `steam` user that controls the server.
-- Monitoring: Uptime Kuma, push monitor via cron
+- Monitoring: Uptime Kuma
 
 ## Files in this repo
 
@@ -31,6 +31,7 @@ sudo systemctl update_valheim
 - Switched out the password in git with a dummy password to avoid unwanted people in my server
 - Created a seperate steam user to run the server so an outsider taking control won't have access to anything else.
 - Why `KillSignal=SIGINT`? To make sure Valheim saves the world before closing.
+- 
 
 ## Roadmap
 
