@@ -11,6 +11,10 @@ const jobState = document.getElementById("jobState");
 const jobTitle = document.getElementById("jobTitle");
 const JOB_TITLES = { update: "Update output", backup: "Backup output" };
 let jobStream = null;
+const msgForm = document.getElementById("msgForm");
+const msgInput = document.getElementById("msgInput");
+const sendBtn = document.getElementById("sendMsg");
+const chatError = document.getElementById("chatError");
 
 async function loadStatus() {
   const badge = document.getElementById("status");
@@ -246,6 +250,35 @@ async function loadPlayers() {
     console.error(error);
   }
 }
+
+async function sendChatMessage(event) {
+  event.preventDefault();
+  sendBtn.disabled = true;
+  try {
+    console.log("fetching api");
+    const response = await fetch("/api/chat", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ message: msgInput.value }),
+    });
+    const data = await response.json();
+    console.log("Validating data...");
+    if (!data.ok) {
+      chatError.textContent = data.error;
+      console.log(data.error);
+      return;
+    }
+    msgInput.value = "";
+    chatError.textContent = "";
+  } catch (error) {
+    console.error(error);
+    chatError.textContent = "Could not reach the panel.";
+  } finally {
+    sendBtn.disabled = false;
+  }
+}
+
+msgForm.addEventListener("submit", sendChatMessage);
 
 loadPlayers();
 setInterval(loadPlayers, 30 * 1000);

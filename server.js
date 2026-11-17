@@ -1,3 +1,5 @@
+/* ========================== Config ========================== */
+
 require("dotenv").config();
 const required = ["SESSION_SECRET", "PANEL_PASSWORD_HASH"];
 const missing = required.filter((name) => !process.env[name]);
@@ -7,14 +9,33 @@ if (missing.length > 0) {
   process.exit(1);
 }
 
-/* ---------------------- Express ---------------------- */
+/* ========================= Imports ========================== */
+/* Packages */
 const express = require("express");
 const app = express();
 const session = require("express-session");
 const expressLayouts = require("express-ejs-layouts");
 
+/* Scripts */
+const { spawn } = require("child_process");
+const { checkPassword, requireLogin } = require("./lib/auth");
+const { getStatus, controlServer } = require("./lib/valheim");
+const { createJob } = require("./lib/jobs");
+const { getSystemStats } = require("./lib/system");
+const { getRecentLogs, getPlayers } = require("./lib/logs");
+const { say, validateMessage } = require("./lib/rcon");
+
+/* ================ Constants and shared state ================= */
+const PORT = process.env.PORT || 3000;
+
+const updateJob = createJob("Update", "/usr/local/sbin/valheim-update");
+const backupJob = createJob("Backup", "/usr/local/sbin/valheim-backup");
+const anyJobRunning = () => updateJob.isRunning() || backupJob.isRunning();
+
+/* ======================= App setup =========================== */
 app.use(express.static("public"));
 app.use(express.urlencoded({ extended: false }));
+app.use(express.json());
 
 app.use(
   session({
@@ -33,27 +54,15 @@ app.set("view engine", "ejs");
 app.use(expressLayouts);
 app.locals.panelName = process.env.PANEL_NAME;
 
-/* ------------------- Import scripts ------------------- */
-const { spawn } = require("child_process");
-const { checkPassword, requireLogin } = require("./lib/auth");
-const { getStatus, controlServer } = require("./lib/valheim");
-const { createJob } = require("./lib/jobs");
-const { getSystemStats } = require("./lib/system");
-const { getRecentLogs, getPlayers } = require("./lib/logs");
+/* ========================== Routes ============================ */
 
-const updateJob = createJob("Update", "/usr/local/sbin/valheim-update");
-const backupJob = createJob("Backup", "/usr/local/sbin/valheim-backup");
-
-const anyJobRunning = () => updateJob.isRunning() || backupJob.isRunning();
-/* --------------- Port the panel runs on --------------- */
-const PORT = process.env.PORT || 3000;
-
-/* ----------------------- Routes ----------------------- */
+/* Pages */
 app.get("/", requireLogin, async (req, res) => {
   const [status, system] = await Promise.all([getStatus(), getSystemStats()]);
   res.render("index", { ...status, system, script: "/app.js" });
 });
 
+/* Auth */
 app.get("/login", (req, res) => {
   res.render("login", { error: null });
 });
@@ -80,8 +89,18 @@ app.post("/logout", (req, res) => {
   });
 });
 
-app.get("/about", (req, res) => {
-  res.send("This is gonna be an awesome server panel for my valheim server ♥");
+/* Server */
+app.get("/api/status", requireLogin, async (req, res) => {
+  const [status, system] = await Promise.all([getStatus(), getSystemStats()]);
+  res.json({
+    ...status,
+    job: updateJob.isRunning()
+      ? "update"
+      : backupJob.isRunning()
+        ? "backup"
+        : null,
+    system,
+  });
 });
 
 app.post("/api/server/:action", requireLogin, async (req, res) => {
@@ -96,6 +115,7 @@ app.post("/api/server/:action", requireLogin, async (req, res) => {
   }
 });
 
+/* Jobs */
 app.post("/api/update", requireLogin, (req, res) => {
   if (anyJobRunning()) {
     return res
@@ -144,19 +164,7 @@ app.get("/api/backup/stream", requireLogin, (req, res) => {
   req.on("close", backupJob.subscribe(send));
 });
 
-app.get("/api/status", requireLogin, async (req, res) => {
-  const [status, system] = await Promise.all([getStatus(), getSystemStats()]);
-  res.json({
-    ...status,
-    job: updateJob.isRunning()
-      ? "update"
-      : backupJob.isRunning()
-        ? "backup"
-        : null,
-    system,
-  });
-});
-
+/* Logs */
 app.get("/api/logs", requireLogin, async (req, res) => {
   try {
     res.json(await getRecentLogs());
@@ -170,6 +178,28 @@ app.get("/api/players", requireLogin, async (req, res) => {
     res.json(await getPlayers());
   } catch (error) {
     res.status(500).json({ error: error.message });
+  }
+});
+
+/* Chat */
+app.post("/api/chat", requireLogin, async (req, res) => {
+  try {
+    const message = validateMessage(req.body.message);
+    await say(message);
+    res.json({ ok: true });
+  } catch (error) {
+    console.error("Chat error:", error);
+
+    if (error.status === 400) {
+      return res.status(400).json({ ok: false, error: error.message });
+    }
+
+    res
+      .status(503)
+      .json({
+        ok: false,
+        error: "Could not reach the game server. Is it running?",
+      });
   }
 });
 
@@ -198,6 +228,8 @@ app.get("/api/ping-stream", requireLogin, (req, res) => {
   req.on("close", () => child.kill());
 });
 /* ENDTEST */
+
+/* ========================== Start ================================ */
 
 app.listen(PORT, () => {
   console.log(`Panel running on http://localhost:${PORT}`);
