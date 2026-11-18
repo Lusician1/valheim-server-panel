@@ -230,22 +230,50 @@ function makePlayerRow(player) {
   return item;
 }
 
+function makeOnlineRow(player) {
+  const item = document.createElement("li");
+
+  const name = document.createElement("span");
+  name.textContent = player.name;
+
+  const hp = document.createElement("span");
+  hp.className = "muted";
+  hp.textContent =
+    player.hp === null
+      ? ""
+      : `${Math.round(player.hp)} / ${Math.round(player.maxHp)} HP`;
+
+  item.append(name, hp);
+  return item;
+}
+
 async function loadPlayers() {
   try {
     const response = await fetch("/api/players");
     const data = await response.json();
 
     const list = document.getElementById("playerList");
-    const playerCount = document.getElementById("playerCount");
-    playerCount.textContent = data.online;
-    if (data.seen.length === 0) {
+    const label = document.getElementById("playerLabel");
+    document.getElementById("playerCount").textContent = data.online;
+
+    const isLive = Array.isArray(data.players);
+    const entries = isLive ? data.players : data.seen;
+
+    label.textContent = isLive ? "Online now" : "Seen this session";
+
+    if (entries.length === 0) {
       const empty = document.createElement("li");
-      empty.textContent = "No players online since last restart!";
       empty.className = "muted";
+      empty.textContent = isLive
+        ? "Nobody online right now"
+        : "No players since last restart";
       list.replaceChildren(empty);
       return;
     }
-    list.replaceChildren(...data.seen.map(makePlayerRow));
+
+    list.replaceChildren(
+      ...entries.map(isLive ? makeOnlineRow : makePlayerRow),
+    );
   } catch (error) {
     console.error(error);
   }

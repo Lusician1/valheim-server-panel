@@ -23,7 +23,13 @@ const { getStatus, controlServer } = require("./lib/valheim");
 const { createJob } = require("./lib/jobs");
 const { getSystemStats } = require("./lib/system");
 const { getRecentLogs, getPlayers } = require("./lib/logs");
-const { say, validateMessage } = require("./lib/rcon");
+const {
+  say,
+  validateMessage,
+  rconConfigured,
+  getOnlinePlayers,
+  parsePlayers,
+} = require("./lib/rcon");
 
 /* ================ Constants and shared state ================= */
 const PORT = process.env.PORT || 3000;
@@ -174,6 +180,16 @@ app.get("/api/logs", requireLogin, async (req, res) => {
 });
 
 app.get("/api/players", requireLogin, async (req, res) => {
+  if (rconConfigured) {
+    try {
+      return res.json(await getOnlinePlayers());
+    } catch (error) {
+      console.error(
+        "RCON players failed, using the log instead:",
+        error.message,
+      );
+    }
+  }
   try {
     res.json(await getPlayers());
   } catch (error) {
@@ -194,12 +210,10 @@ app.post("/api/chat", requireLogin, async (req, res) => {
       return res.status(400).json({ ok: false, error: error.message });
     }
 
-    res
-      .status(503)
-      .json({
-        ok: false,
-        error: "Could not reach the game server. Is it running?",
-      });
+    res.status(503).json({
+      ok: false,
+      error: "Could not reach the game server. Is it running?",
+    });
   }
 });
 
