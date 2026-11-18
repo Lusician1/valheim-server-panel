@@ -86,14 +86,14 @@
       <p class="stat-sub">of <%= system.disk.total %> GB</p>
     </div>
   </section>
-  <!-- Chat -->
-  <section class="card">
+  <!-- Chat. save for later when adding chat monitor -->
+  <!-- <section class="card chat-card">
     <h2 class="card-title">Server Chat</h2>
-    <form id="msgForm">
-      <p id="chatError"></p>
+    <form id="msgForm" class="msg-form">
+      <p id="chatError" class="chat-error"></p>
       <input
         required
-        class="input"
+        class="input chat-input"
         id="msgInput"
         type="text"
         maxlength="200"
@@ -103,11 +103,26 @@
       />
       <button id="sendMsg" class="btn btn-secondary">Send</button>
     </form>
-  </section>
+  </section> -->
   <!-- Log -->
   <section class="card">
     <h2 class="card-title">Server log</h2>
     <ul id="serverLog" class="log-box"></ul>
+    <!-- Temporary neater chat box until adding chat monitor -->
+    <form id="msgForm" class="msg-form">
+      <p id="chatError" class="chat-error"></p>
+      <input
+        required
+        class="input chat-input"
+        id="msgInput"
+        type="text"
+        maxlength="200"
+        aria-label="Type your message here"
+        placeholder="Type your message here..."
+        autocomplete="off"
+      />
+      <button id="sendMsg" class="btn btn-secondary">Send</button>
+    </form>
   </section>
   <!-- Update -->
   <section id="jobCard" class="card" hidden>

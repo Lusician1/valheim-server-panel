@@ -362,7 +362,6 @@ p.card-title {
 
 .input {
   height: 2.875rem;
-  margin-bottom: 0.875rem;
   padding: 0 0.875rem;
   border: 1px solid var(--border);
   border-radius: var(--radius-sm);
@@ -435,6 +434,26 @@ p.card-title {
 .player-list li + li {
   margin-top: 0.5rem;
 }
+
+/* ------------------- Chat -------------------- */
+.card.chat-card {
+  gap: 0;
+}
+
+.chat-error {
+  min-height: 1.5em;
+  color: red;
+}
+
+.msg-form {
+  width: fit-content;
+  margin: 0 auto;
+}
+
+.input.chat-input {
+  width: 20rem;
+}
+
 /* ------------------- Logs -------------------- */
 .log-box {
   margin: 0;
