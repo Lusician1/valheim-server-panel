@@ -34,7 +34,14 @@
       <li><button id="backupSrv" class="btn btn-secondary">Backup</button></li>
     </ul>
   </section>
-
+  <!-- Job log -->
+  <section id="jobCard" class="card" hidden>
+    <div class="card-head">
+      <h2 id="jobTitle" class="card-title">Job output</h2>
+      <span id="jobState" class="pill">Running</span>
+    </div>
+    <pre id="jobLog" class="log-box"></pre>
+  </section>
   <section class="stats">
     <!-- Players -->
     <div class="card">
@@ -123,13 +130,5 @@
       />
       <button id="sendMsg" class="btn btn-secondary">Send</button>
     </form>
-  </section>
-  <!-- Update -->
-  <section id="jobCard" class="card" hidden>
-    <div class="card-head">
-      <h2 id="jobTitle" class="card-title">Job output</h2>
-      <span id="jobState" class="pill">Running</span>
-    </div>
-    <pre id="jobLog" class="log-box"></pre>
   </section>
 </main>
