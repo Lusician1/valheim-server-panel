@@ -270,6 +270,7 @@ async function sendChatMessage(event) {
     }
     msgInput.value = "";
     chatError.textContent = "";
+    loadStatus();
   } catch (error) {
     console.error(error);
     chatError.textContent = "Could not reach the panel.";
