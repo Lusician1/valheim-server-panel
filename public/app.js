@@ -20,6 +20,8 @@ async function loadStatus() {
   const badge = document.getElementById("status");
   const checkedAt = document.getElementById("checkedAt");
 
+  if (document.hidden) return;
+
   try {
     const response = await fetch("/api/status");
     const data = await response.json();
@@ -260,6 +262,8 @@ async function loadPlayers() {
     const entries = isLive ? data.players : data.seen;
 
     label.textContent = isLive ? "Online now" : "Seen this session";
+
+    if (document.hidden) return;
 
     if (entries.length === 0) {
       const empty = document.createElement("li");
