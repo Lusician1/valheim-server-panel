@@ -15,6 +15,7 @@ const msgForm = document.getElementById("msgForm");
 const msgInput = document.getElementById("msgInput");
 const sendBtn = document.getElementById("sendMsg");
 const chatError = document.getElementById("chatError");
+const POSITION_LABELS = { x: "X", z: "Z", y: "Height" };
 
 async function loadStatus() {
   const badge = document.getElementById("status");
@@ -245,17 +246,30 @@ function makeOnlineRow(player) {
   img.style = "width: 40px; height: 40px";
   const name = document.createElement("span");
   name.textContent = player.name;
+  const position = document.createElement("p");
+  if (player.position) {
+    for (const [axis, label] of Object.entries(POSITION_LABELS)) {
+      const title = document.createElement("span");
+      title.className = "pos-label";
+      title.textContent = label + ": ";
+
+      const value = document.createElement("span");
+      value.textContent = Math.round(player.position[axis]);
+
+      position.append(title, value);
+    }
+  } else {
+    position.textContent = "Player position: not available";
+  }
 
   const hp = document.createElement("span");
   hp.className = "muted hp-text";
   hp.textContent =
     player.hp === null
-      ? ""
+      ? "0/0 HP"
       : `${Math.round(player.hp)} / ${Math.round(player.maxHp)} HP`;
 
   const hpRatio = Math.round((player.hp / player.maxHp) * 100);
-  const test = document.createElement("p");
-  test.textContent = hpRatio;
   const maxHpBar = document.createElement("div");
   maxHpBar.className = "bar bar-max-hp";
   const currentHpBar = document.createElement("div");
@@ -271,7 +285,7 @@ function makeOnlineRow(player) {
           style="width: <%= system.cpu %>%"
         ></div> */
   top.append(img);
-  middle.append(name);
+  middle.append(name, position);
   bottom.append(hp, maxHpBar);
   maxHpBar.append(currentHpBar);
   item.append(top, middle, bottom);

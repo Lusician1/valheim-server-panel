@@ -46,6 +46,7 @@
 
 html {
   font-size: 90%;
+  letter-spacing: 1px;
 }
 
 body {
@@ -449,6 +450,14 @@ p.card-title {
 
 .bar-fill.bar-max-hp {
   width: 100%;
+}
+
+.pos-label {
+  color: var(--gold);
+}
+
+.pos-label:not(:first-child) {
+  margin-left: 0.75em;
 }
 
 /* ------------------- Chat -------------------- */

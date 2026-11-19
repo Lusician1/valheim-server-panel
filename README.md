@@ -55,12 +55,14 @@ sudo systemctl update_valheim
 
 ## Roadmap
 
-- [x] Phase 0: Server as a service, update script, monitoring
-- [x] Phase 1: Status page (Node.js)
-- [x] Phase 2: Start/stop buttons + login
-- [x] Phase 3: Update button with live output
-- [x] Phase 4: Server info: player info, log viewer, CPU/RAM/disk + backup button
-- [x] Phase 5: BepInEx and RCON install for server monitoring
-- [x] Phase 6: Send chat messages to the game from the panel
-- [ ] Phase 7: Mod management in panel
-- [ ] Phase 8: Version and world selection + World creation (Stretch goal)
+- [x] Phase 0  : Server as a service, update script, monitoring
+- [x] Phase 1  : Status page (Node.js)
+- [x] Phase 2  : Start/stop buttons + login
+- [x] Phase 3  : Update button with live output
+- [x] Phase 4  : Server info: player info, log viewer, CPU/RAM/disk + backup button
+- [x] Phase 5  : BepInEx and RCON install for server monitoring
+- [x] Phase 6  : Send chat messages to the game from the panel
+- [ ] Phase 6.5: Live player list 
+- [ ] Phase 7  : Mod management in panel
+- [ ] Phase 8  : Version and world selection + World creation (Stretch goal)
+- [ ] Phase 8.5: Database with player history and info + more database features
