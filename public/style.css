@@ -546,4 +546,8 @@ p.card-title {
   .badge-lg {
     font-size: 1.75rem;
   }
+
+  .player-list {
+    grid-template-columns: auto;
+  }
 }
