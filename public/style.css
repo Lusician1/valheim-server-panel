@@ -422,17 +422,33 @@ p.card-title {
 }
 
 /* ------------------Players ------------------- */
+.player-list {
+  display: grid;
+  grid-template-columns: auto auto auto;
+  gap: 10px;
+}
+
+.hp-text {
+  display: block;
+  min-height: 1.5em;
+}
+
 .player-list li {
   display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 0.6rem 0.8rem;
+  padding: 1rem 1.4rem;
   border-radius: var(--radius-sm);
   background-color: var(--surface-2);
 }
 
-.player-list li + li {
-  margin-top: 0.5rem;
+.player-card {
+  display: flex;
+  flex-direction: column;
+  align-items: start;
+  height: fit-content;
+}
+
+.bar-fill.bar-max-hp {
+  width: 100%;
 }
 
 /* ------------------- Chat -------------------- */

@@ -24,9 +24,10 @@ const { createJob } = require("./lib/jobs");
 const { getSystemStats } = require("./lib/system");
 const { getRecentLogs, getPlayers } = require("./lib/logs");
 const {
+  rconConfigured,
+  livePlayersAvailable,
   say,
   validateMessage,
-  rconConfigured,
   getOnlinePlayers,
   parsePlayers,
 } = require("./lib/rcon");
@@ -180,7 +181,7 @@ app.get("/api/logs", requireLogin, async (req, res) => {
 });
 
 app.get("/api/players", requireLogin, async (req, res) => {
-  if (rconConfigured) {
+  if (livePlayersAvailable) {
     try {
       return res.json(await getOnlinePlayers());
     } catch (error) {

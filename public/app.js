@@ -222,6 +222,7 @@ function formatLastSeen(iso) {
 
 function makePlayerRow(player) {
   const item = document.createElement("li");
+  item.className = "player-card";
 
   const playerName = document.createElement("span");
   playerName.textContent = player.name;
@@ -234,18 +235,46 @@ function makePlayerRow(player) {
 
 function makeOnlineRow(player) {
   const item = document.createElement("li");
+  item.className = "player-card";
+  const top = document.createElement("div");
+  const middle = document.createElement("div");
+  const bottom = document.createElement("div");
+  bottom.style = "width: 100%";
 
+  const img = document.createElement("div");
+  img.style = "width: 40px; height: 40px";
   const name = document.createElement("span");
   name.textContent = player.name;
 
   const hp = document.createElement("span");
-  hp.className = "muted";
+  hp.className = "muted hp-text";
   hp.textContent =
     player.hp === null
       ? ""
       : `${Math.round(player.hp)} / ${Math.round(player.maxHp)} HP`;
 
-  item.append(name, hp);
+  const hpRatio = Math.round((player.hp / player.maxHp) * 100);
+  const test = document.createElement("p");
+  test.textContent = hpRatio;
+  const maxHpBar = document.createElement("div");
+  maxHpBar.className = "bar bar-max-hp";
+  const currentHpBar = document.createElement("div");
+  currentHpBar.id = "hpBar";
+  currentHpBar.className = "bar-fill bar-fill-hp";
+  currentHpBar.style = `width: ${hpRatio}%`;
+  currentHpBar.style.backgroundColor = `hsl(${hpRatio * 1.2}, 65%, 45%)`;
+
+  /* <div class="bar">
+        <div
+          id="cpuBar"
+          class="bar-fill"
+          style="width: <%= system.cpu %>%"
+        ></div> */
+  top.append(img);
+  middle.append(name);
+  bottom.append(hp, maxHpBar);
+  maxHpBar.append(currentHpBar);
+  item.append(top, middle, bottom);
   return item;
 }
 
