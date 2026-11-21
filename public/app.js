@@ -293,6 +293,7 @@ function makeOnlineRow(player) {
 }
 
 async function loadPlayers() {
+  if (document.hidden) return;
   try {
     const response = await fetch("/api/players");
     const data = await response.json();
@@ -305,8 +306,6 @@ async function loadPlayers() {
     const entries = isLive ? data.players : data.seen;
 
     label.textContent = isLive ? "Online now" : "Seen this session";
-
-    if (document.hidden) return;
 
     if (entries.length === 0) {
       const empty = document.createElement("li");
@@ -357,7 +356,7 @@ async function sendChatMessage(event) {
 msgForm.addEventListener("submit", sendChatMessage);
 
 loadPlayers();
-setInterval(loadPlayers, 30 * 1000);
+setInterval(loadPlayers, 5 * 1000);
 
 loadStatus();
 loadLogs();
