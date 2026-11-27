@@ -241,9 +241,16 @@ function makeOnlineRow(player) {
   const middle = document.createElement("div");
   const bottom = document.createElement("div");
   bottom.style = "width: 100%";
-
-  const img = document.createElement("div");
-  img.style = "width: 40px; height: 40px";
+  const img = player.avatar
+    ? document.createElement("img")
+    : document.createElement("span");
+  img.className = "avatar";
+  if (player.avatar) {
+    img.src = player.avatar;
+    img.alt = "";
+  } else {
+    img.textContent = player.name[0].toUpperCase();
+  }
   const name = document.createElement("span");
   name.textContent = player.name;
   const position = document.createElement("p");

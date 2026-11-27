@@ -479,6 +479,10 @@ p.card-title {
   width: 20rem;
 }
 
+.avatar {
+  width: 40px;
+  height: 40px;
+}
 /* ------------------- Logs -------------------- */
 .log-box {
   margin: 0;
